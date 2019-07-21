@@ -2,7 +2,8 @@ swagger: '2.0'
 info:
   title: SMS Server
   description: >-
-    This is the official documentation for the SMS Server. SMS server is an API that manages sending and receiving of SMS between a user and their contacts.
+    This is the official documentation for the SMS Server. SMS server is an API that manages sending and receiving of SMS between a user and their contacts. 
+    A user registers for an account which creates the user's own contact. A user can then add more contacts to their contact list and send messages to other phone numbers. 
   version: 1.0.0
 basePath: /api/v1
 schemes:
@@ -432,5 +433,5 @@ paths:
           description: You have no unread messages
 
 externalDocs:
-  description: Try the SMS server
+  description: Source code
   url: 'https://github.com/PAbishai/sms_server'
