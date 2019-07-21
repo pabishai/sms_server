@@ -8,6 +8,8 @@ import userRoutes  from './routes/user.routes';
 import contactRoutes from './routes/contact.routes';
 import smsRoutes from './routes/sms.routes'
 import authMiddleware from './middleware/auth.middleware';
+import parametersMiddleware from './middleware/validateParameters.middleware';
+import validateEmpty from './middleware/validateEmpty.middleware';
 
 const swaggerDocument = YAML.load('./swagger.yml')
 // initialize dot env
@@ -23,9 +25,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use(`${apiPath}/auth`, authRoutes)
-app.use(`${apiPath}/user`, authMiddleware, userRoutes);
-app.use(`${apiPath}/contacts`, authMiddleware, contactRoutes)
-app.use(`${apiPath}/sms`, authMiddleware, smsRoutes)
+app.use(`${apiPath}/auth`, parametersMiddleware, authRoutes)
+app.use(`${apiPath}/user`, authMiddleware, parametersMiddleware, userRoutes);
+app.use(`${apiPath}/contacts`, authMiddleware, parametersMiddleware, contactRoutes)
+app.use(`${apiPath}/sms`, authMiddleware, parametersMiddleware, smsRoutes)
 
 export default app;
