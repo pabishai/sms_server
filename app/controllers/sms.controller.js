@@ -104,6 +104,57 @@ export const findSms = async (req, res) => {
     });
 }
 
+export const readSMS = async (req, res) => {
+    const {id} = req.params;
+    const {currentUser} = req;
+    const params = {
+        receiver: currentUser.id
+    };
+    if(id){
+        params.id = id;
+    }
+
+    await dbUpdateSms({status: 'read'}, params)
+
+    return res.status(200).send({
+        message: 'Retrieved your messages'
+    });
+}
+
+export const sendSMS = async (req, res) => {
+    const {id} = req.params;
+    const {currentUser} = req;
+    
+    const params = {
+        receiver: currentUser.id
+    };
+
+    if(id){
+        params.id = id;
+    }
+
+    await dbUpdateSms({status: 'sent'}, {id});
+
+    return res.status(200).send({
+        message: 'Retrieved your messages'
+    });
+}
+
+export const unreadSMS = async (req, res) => {
+    const {id} = req.currentUser;
+
+    const unreadSMS = await dbFindSms({
+        receiver: id,
+        status: 'sent'
+    })
+
+    return res.status(200).send({
+        message: 'Unread messages',
+        unreadSMS
+    })
+
+}
+
 // Get id of contact to send to
 const getContactId = async (phoneNumber, userId) => {
     return await dbFindOrCreateContact({

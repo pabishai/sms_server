@@ -132,6 +132,7 @@ export const dbFindContacts = async params => {
     });
 }
 
+// sequelize function to update contact
 export const dbUpdateContact = async (updateParams, findParams) => {
     return await Contact.update(updateParams, {
         where: findParams
