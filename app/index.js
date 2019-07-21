@@ -1,3 +1,5 @@
+import YAML from 'yamljs';
+import swaggerUi from 'swagger-ui-express';
 import dotenv from 'dotenv'
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -7,6 +9,7 @@ import contactRoutes from './routes/contact.routes';
 import smsRoutes from './routes/sms.routes'
 import authMiddleware from './middleware/auth.middleware';
 
+const swaggerDocument = YAML.load('./swagger.yml')
 // initialize dot env
 dotenv.config();
 
@@ -17,6 +20,8 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(`${apiPath}/auth`, authRoutes)
 app.use(`${apiPath}/user`, authMiddleware, userRoutes);

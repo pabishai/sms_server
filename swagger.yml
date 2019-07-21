@@ -1,0 +1,436 @@
+swagger: '2.0'
+info:
+  title: SMS Server
+  description: >-
+    This is the official documentation for the SMS Server. SMS server is an API that manages sending and receiving of SMS between a user and their contacts.
+  version: 1.0.0
+basePath: /api/v1
+schemes:
+  - https
+  - http
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+paths:
+  /auth:
+    post:
+      tags:
+        - Auth
+      summary: Authenticate user
+      description: 'Performs user authentication'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: message
+          description: Authentication parameters
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Abishai
+              contact:
+                type: string
+                example: "0733333333"
+              password:
+                type: string
+                example: nywalingumu
+      responses:
+        '201':
+          description: CREATED
+        '200':
+          description: OK
+      security:
+  /user/{id}:
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - profile
+      summary: UPDATE user profile
+      description: Updates your user profile
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: id of the user
+          required: true
+          schema:
+            type: string
+        - in: body
+          name: message
+          description: Login parameters
+          required: true
+          schema:
+            type: object
+            properties:
+              contact:
+                type: string
+                example: '8976543423'
+              password:
+                type: string
+                example: nywalingumu
+      responses:
+        '200':
+          description: OK
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - profile
+      summary: DELETE user profile
+      description: Deletes your user profile
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: id of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+
+  /contacts:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Contacts
+      summary: GET user contacts
+      description: Get all user contacts
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Contacts
+      summary: CREATE a contact
+      description: Create a contact
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: message
+          description: Contact name and phone number
+          required: true
+          schema:
+            type: object
+            properties:
+              phoneNumber:
+                type: string
+                example: '0745324567'
+              name:
+                type: string
+                example: mtu mwingine
+      responses:
+        '201':
+          description: CREATED
+        '401':
+          description: Unauthorized
+        '404':
+          description: User does not exist
+
+  /contacts/{phoneNumber}:
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Contacts
+      summary: UPDATE a contact
+      description: Update a specific contact
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: number
+          description: Phone number of the contact
+          required: true
+          schema:
+            type: string
+        - in: body
+          name: message
+          description: Contact's name or number
+          required: true
+          schema:
+            type: object
+            properties:
+              phoneNumber:
+                type: string
+                example: '0745324567'
+              name:
+                type: string
+                example: 'Marcos'
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '404':
+          description: Contact not found
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Contacts
+      summary: Get contact details
+      description: Get contact details
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: number
+          description: Phone number of the contact
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '404':
+          description: Contact not found
+
+  /contacts/{id}:
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - Contacts
+      summary: DELETE a contact
+      description: Deletes a contact using the id. It is much safer than the phone number
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: Id of the contact
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '404':
+          description: Contact not found
+
+  /sms:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - SMS
+      summary: GET all user messages
+      description: Get all user's short messages
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - SMS
+      summary: CREATE an sms
+      description: Create a new draft sms. Creates a new contact if the receiver does not exist in your contacts
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: message
+          description: SMS parameters
+          required: true
+          schema:
+            type: object
+            properties:
+              to:
+                type: string
+                example: '0767543234'
+              message:
+                type: string
+                example: 'Habari is hello in Swahili'
+      responses:
+        '201':
+          description: CREATED
+        '401':
+          description: Unauthorized
+        '404':
+          description: Contact does not exist
+  /sms/{id}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - SMS
+      summary: GET SMS details
+      description: Get details of a single SMS
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: ID of the SMS
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '404':
+          description: Message does not exist
+    put:
+      security:
+          - Bearer: []
+      tags:
+          - SMS
+      summary: UPDATE an SMS
+      description: Update an SMS message or receiver
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: ID of the sms
+          required: true
+          schema:
+            type: string
+        - in: body
+          name: message
+          description: SMS parameters
+          required: true
+          schema:
+            type: object
+            properties:
+              to:
+                type: string
+                example: '0767543234'
+              message:
+                type: string
+                example: 'Badilisha is change in Swahili'
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '404':
+          description: Message does not exist
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - SMS
+      summary: DELETE an SMS
+      description: Delete a message
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: ID of the message
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '404':
+          description: Message does not exist
+
+  /sms/{id}/read:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - SMS
+      summary: Mark SMS as read
+      description: Mark ome SMS as read if id is provided else mark all as read
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: ID of the message
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '404':
+          description: Message does not exist
+  /sms/{id}/send:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - SMS
+      summary: Send SMS
+      description: Send one SMS if id is provided else send all draft
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: ID of the message
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '404':
+          description: Message does not exist
+  /sms/unread:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - SMS
+      summary: GET all unread SMS messages
+      description: Get a list of all unread messages sent to you
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '404':
+          description: You have no unread messages
+
+externalDocs:
+  description: Try the SMS server
+  url: 'https://github.com/PAbishai/sms_server'
