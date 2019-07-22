@@ -1,8 +1,6 @@
 # InteliSMS Management API
 InteliSMS Management API is an application that allows a user to manage their sms messages online. A user can create a contact book with all their contacts and send messages to any phone number. A user can also read messages sent through the api.
 
-[Test the endpoints ](https://intellisms.herokuapp.com/docs)
-
 # How to setup the API locally
 1. Clone the repository
 2. Create a database for storing the sms and contacts
