@@ -1,17 +1,28 @@
 import models from '../models';
-import {dbFindOrCreateContact} from './contacts.controller'
+import {dbFindOrCreateContact} from './contacts.controller';
+import {Op} from 'sequelize';
 
 const { sms } = models;
 
 export const createSms = async (req, res) => {
     const {to, message } = req.body;
-    const {id} = req.currentUser;
+    const {contact, id} = req.currentUser;
+
+    // Get sender contact id
+    const [senderContact, smsCreated] = await getContactId(contact, id);
 
     // create contact if it doent exist
     const [toContact, created] = await getContactId(to,id);
 
+    if(senderContact.id === toContact.id) {
+        return res.status(201).send({
+            message: 'You cannot send a meesage to yourself',
+            sms
+        });
+    }
+
     const sms = await dbCreateSms({
-        sender: id,
+        sender: senderContact.id,
         receiver: toContact.id,
         message: message,
         status: 'draft'
@@ -79,20 +90,45 @@ export const deleteSms = async (req, res) => {
 }
 
 export const findSms = async (req, res) => {
-    const {sender, receiver} = req.query;
-    const {id} = req.params
-    const params = {}
+    const {id, sent, received, unread} = req.params
 
-    if(sender){
-        params.sender = sender;
+    const {originalUrl} = req
+
+    const {currentUser} = req;
+
+    // Get sender contact id
+    const [myContact, smsCreated] = await getContactId(currentUser.contact, currentUser.id);
+
+    let params = {
+        [Op.or]: {
+            receiver: myContact.id,
+            sender: myContact.id
+        }
+    };
+
+
+    if(sent){
+        params = {
+            sender: myContact.id,  
+        }
     }
 
-    if(receiver){
-        params.receiver = receiver
+    if(received){
+        params = {
+            receiver: myContact.id,  
+        }
     }
+
+    if(unread){
+        params = {
+            receiver: myContact.id,
+            status: 'sent'
+        }
+    }
+
 
     if(id){
-        params.id = id
+        params = {id};
     }
 
 
@@ -157,6 +193,7 @@ export const unreadSMS = async (req, res) => {
 
 // Get id of contact to send to
 const getContactId = async (phoneNumber, userId) => {
+    console.log(phoneNumber);
     return await dbFindOrCreateContact({
         phoneNumber,
         userId

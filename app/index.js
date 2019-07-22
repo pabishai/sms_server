@@ -9,7 +9,6 @@ import contactRoutes from './routes/contact.routes';
 import smsRoutes from './routes/sms.routes'
 import authMiddleware from './middleware/auth.middleware';
 import parametersMiddleware from './middleware/validateParameters.middleware';
-import validateEmpty from './middleware/validateEmpty.middleware';
 
 const swaggerDocument = YAML.load('./swagger.yml')
 // initialize dot env

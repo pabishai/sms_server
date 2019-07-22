@@ -2,12 +2,13 @@ import { generateJWTToken } from '../utils/jwt';
 import { generateHash, validPassword} from '../utils/hash';
 import models from '../models';
 import {Op} from 'sequelize'
+import { dbFindOrCreateContact } from './contacts.controller';
 
 const { User } = models;
 
 // create or signin a new user
 export const authenticateUser = async (req, res) => {
-    const {contact, password} = req.body;
+    const {contact, password, name} = req.body;
     const [user, created] = await User.findOrCreate({
         where:{
             contact
@@ -27,6 +28,12 @@ export const authenticateUser = async (req, res) => {
             token
         });
     }
+
+    const [newContact, contactCreated] = await dbFindOrCreateContact({
+        phoneNumber: contact
+    }, {isUserContact: true, userId: user.id, name:name ? name : null});
+
+    console.log(newContact)
 
     // Generate user token
     const token = generateJWTToken(user);

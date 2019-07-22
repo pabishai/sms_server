@@ -48,7 +48,7 @@ paths:
         '200':
           description: OK
       security:
-  /user/{id}:
+  /user:
     put:
       security:
         - Bearer: []
@@ -61,12 +61,6 @@ paths:
       produces:
         - application/json
       parameters:
-        - in: path
-          name: id
-          description: id of the user
-          required: true
-          schema:
-            type: string
         - in: body
           name: message
           description: Login parameters
@@ -94,13 +88,6 @@ paths:
         - application/json
       produces:
         - application/json
-      parameters:
-        - in: path
-          name: id
-          description: id of the user
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: OK
@@ -151,7 +138,7 @@ paths:
         '404':
           description: User does not exist
 
-  /contacts/{phoneNumber}:
+  /contacts/{number}:
     put:
       security:
         - Bearer: []
@@ -236,22 +223,7 @@ paths:
           description: Unauthorized
         '404':
           description: Contact not found
-
   /sms:
-    get:
-      security:
-        - Bearer: []
-      tags:
-        - SMS
-      summary: GET all user messages
-      description: Get all user's short messages
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: OK
-        '401':
-          description: Unauthorized
     post:
       security:
         - Bearer: []
@@ -282,6 +254,20 @@ paths:
           description: Unauthorized
         '404':
           description: Contact does not exist
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - SMS
+      summary: GET all user messages
+      description: Get all user's short messages
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
   /sms/{id}:
     get:
       security:
@@ -367,7 +353,7 @@ paths:
           description: Message does not exist
 
   /sms/{id}/read:
-    post:
+    put:
       security:
         - Bearer: []
       tags:
@@ -391,7 +377,7 @@ paths:
         '404':
           description: Message does not exist
   /sms/{id}/send:
-    post:
+    put:
       security:
         - Bearer: []
       tags:

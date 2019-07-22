@@ -5,7 +5,7 @@ import awaitErrorHandler from '../utils/awaitErrorHandler'
 
 const router = express.Router();
 
-
+router.get('', awaitErrorHandler(findContacts));
 router.get('/:number', awaitErrorHandler(findContacts));
 router.put('/:number', awaitErrorHandler(editContact));
 router.post('', awaitErrorHandler(createContact));

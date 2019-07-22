@@ -26,6 +26,7 @@ export const createContact = async (req, res, next) => {
 
 export const editContact = async (req, res, next) => {
     const {number} = req.params
+    console.log(number)
     const {phoneNumber, name} = req.body;
     const {id} = req.currentUser;
     
@@ -36,13 +37,19 @@ export const editContact = async (req, res, next) => {
     // Find if number you want to update exists in your contacts
     const contact = await dbFindContacts(params);
 
+    if(!number) {
+        return res.status(400).send({
+            message: 'Please input the number to edit'
+        });  
+    }
+
     if(!contact.length){
         return res.status(404).send({
             message: `${number} does not exist in your contacts`
         });  
     }
 
-    if(phoneNumber !== number){
+    if(phoneNumber && phoneNumber !== number){
         // Find if the new number you want to change it to exists
         const [contact] = await dbFindContacts({phoneNumber, userId:id});
         if(contact){

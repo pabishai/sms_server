@@ -16,7 +16,7 @@ module.exports = {
           key: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       receiver: {
         type: Sequelize.INTEGER,

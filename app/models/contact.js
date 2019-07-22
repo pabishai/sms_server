@@ -41,11 +41,13 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Contact.hasMany(models.sms, {
       as: 'sentMessages',
-      foreignKey: 'sender'
+      foreignKey: 'sender',
+      onUpdate: 'cascade',
+      onDelete: 'cascade'
     })
     Contact.hasMany(models.sms, {
       as: 'receivedMessages',
-      foreignKey: 'receiver'
+      foreignKey: 'receiver',
     })
     Contact.belongsTo(models.User, {
       as: 'user',

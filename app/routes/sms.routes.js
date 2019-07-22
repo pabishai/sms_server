@@ -7,7 +7,11 @@ const router = express.Router();
 
 router.post('/', awaitErrorHandler(createSms));
 router.put('/:id', awaitErrorHandler(updateSms));
+router.get('', awaitErrorHandler(findSms));
 router.get('/:id', awaitErrorHandler(findSms));
+router.get('/:sent', awaitErrorHandler(findSms));
+router.get('/:received', awaitErrorHandler(findSms));
+router.get('/:unread', awaitErrorHandler(findSms));
 router.delete('/:id', awaitErrorHandler(deleteSms));
 router.put('/:id/read', awaitErrorHandler(readSMS));
 router.put('/:id/send', awaitErrorHandler(sendSMS));
