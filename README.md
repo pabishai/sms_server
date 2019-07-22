@@ -13,4 +13,5 @@ InteliSMS Management API is an application that allows a user to manage their sm
 3. Swagger for documentation
 
 # Screenshots
+![Screenshots](https://github.com/PAbishai/sms_server/blob/master/screenshots/Screenshot%202019-07-22%20at%2006.56.22.png)
 
