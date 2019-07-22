@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 export const generateJWTToken = (user, res) => {
+  console.log('Code reached here');
   const payload = {
       id: user.id,
       contact: user.contact
