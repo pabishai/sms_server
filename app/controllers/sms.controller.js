@@ -193,7 +193,6 @@ export const unreadSMS = async (req, res) => {
 
 // Get id of contact to send to
 const getContactId = async (phoneNumber, userId) => {
-    console.log(phoneNumber);
     return await dbFindOrCreateContact({
         phoneNumber,
         userId

@@ -6,11 +6,9 @@ export const generateJWTToken = (user, res) => {
       id: user.id,
       contact: user.contact
     };
-    console.log(payload)
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
       expiresIn: '7h',
     });
-    console.log(token)
     return token
   } catch (error) {
     return res.status(500).send({
