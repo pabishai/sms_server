@@ -29,9 +29,11 @@ export const authenticateUser = async (req, res) => {
         });
     }
 
-    const [newContact, contactCreated] = await dbFindOrCreateContact({
+    await dbFindOrCreateContact({
         phoneNumber: contact
-    }, {isUserContact: true, userId: user.id, name:name ? name : null});
+    }, {isUserContact: true, 
+        userId: user.id, 
+        name: name ? name : null});
 
 
     // Generate user token
