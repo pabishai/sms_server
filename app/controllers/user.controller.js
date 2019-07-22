@@ -23,7 +23,7 @@ export const authenticateUser = async (req, res) => {
         // Generate user token
         const token = generateJWTToken(user, res);
 
-        return res.status(200).send({
+        res.status(200).send({
             message: 'Succesfully logged in user',
             token
         });
@@ -38,7 +38,7 @@ export const authenticateUser = async (req, res) => {
     // Generate user token
     const token = generateJWTToken(user, res);
 
-    return res.status(201).send({
+    res.status(201).send({
         message: 'User successfully registered',
         token
     });
@@ -48,11 +48,11 @@ export const deleteUser = async (req,res) => {
     const { id } = req.currentUser;
     const user = await User.findByPk(id)
     if(!user){
-        return res.status(400).send({
+        res.status(400).send({
             message: 'Record does not exist'
         });       
     }
-    return res.status(200).send({
+    res.status(200).send({
         message: 'Succesfully deleted user'
     });
 }
