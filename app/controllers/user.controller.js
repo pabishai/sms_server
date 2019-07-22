@@ -21,7 +21,7 @@ export const authenticateUser = async (req, res) => {
 
     if(!created && validPassword(password, user.password)){
         // Generate user token
-        const token = generateJWTToken(user);
+        const token = generateJWTToken(user, res);
 
         return res.status(200).send({
             message: 'Succesfully logged in user',
@@ -36,7 +36,7 @@ export const authenticateUser = async (req, res) => {
     console.log(newContact)
 
     // Generate user token
-    const token = generateJWTToken(user);
+    const token = generateJWTToken(user, res);
 
     return res.status(201).send({
         message: 'User successfully registered',

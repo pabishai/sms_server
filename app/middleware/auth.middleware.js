@@ -4,7 +4,7 @@ export default (req, res, next) => {
   const token = req.headers.authorization;
   if (token) {
 		const tokenArray = token.split(' ');
-		const decodedToken = decodeJWTToken(tokenArray[1]);
+		const decodedToken = decodeJWTToken(tokenArray[1], res);
 
     if (!decodedToken)
     return res.status(401)
