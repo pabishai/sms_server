@@ -33,7 +33,6 @@ export const authenticateUser = async (req, res) => {
         phoneNumber: contact
     }, {isUserContact: true, userId: user.id, name:name ? name : null});
 
-    console.log(newContact)
 
     // Generate user token
     const token = generateJWTToken(user, res);

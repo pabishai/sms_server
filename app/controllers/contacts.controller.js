@@ -26,7 +26,6 @@ export const createContact = async (req, res, next) => {
 
 export const editContact = async (req, res, next) => {
     const {number} = req.params
-    console.log(number)
     const {phoneNumber, name} = req.body;
     const {id} = req.currentUser;
     
